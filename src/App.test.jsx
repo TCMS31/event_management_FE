@@ -128,6 +128,30 @@ describe('auth flow', () => {
     expect(await screen.findByRole('heading', { name: /^sign in$/i })).toBeInTheDocument();
   });
 
+  it('returns to the page that was asked for after signing in', async () => {
+    const user = userEvent.setup();
+    mock
+      .onPost('/login')
+      .reply(
+        200,
+        { status: { code: 200, data: { user: DEMO_USER } } },
+        { authorization: DEMO_TOKEN }
+      );
+    mock.onGet('/api/v1/events/7').reply(200, { ...seedEvents.organized[0], id: 7 });
+
+    renderApp('/events/7');
+
+    await screen.findByRole('heading', { name: /^sign in$/i });
+    await user.type(screen.getByLabelText(/email/i), DEMO_USER.email);
+    await user.type(screen.getByLabelText(/password/i), 'password123');
+    await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: seedEvents.organized[0].name })
+    ).toBeInTheDocument();
+    expect(mock.history.get.map((r) => r.url)).toEqual(['/api/v1/events/7']);
+  });
+
   it('returns to the sign-in form when the API rejects a stored token', async () => {
     defaultTokenStore.save({ token: DEMO_TOKEN, user: DEMO_USER });
     mock.onGet(/\/api\/v1\/events/).reply(401, { errors: ['Signature has expired'] });
