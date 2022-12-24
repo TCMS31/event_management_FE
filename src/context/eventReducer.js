@@ -54,9 +54,13 @@ export const eventReducer = (state, action) => {
     case 'COLLECTION_LOADED': {
       const { items, page, perPage, total, hasMore } = action.payload;
       const previous = state.collections[action.collection].items;
+      // A row created, joined or deleted here since the last fetch shifts the
+      // server's page boundaries, so an appended page can repeat rows already
+      // on screen. Keep the first copy of each id.
+      const seen = new Set(previous.map((event) => event.id));
+      const fresh = items.filter((event) => !seen.has(event.id));
       return patchCollection(state, action.collection, {
-        // `append` is how "Load more" grows the list without refetching page 1.
-        items: action.append ? [...previous, ...items] : items,
+        items: action.append ? [...previous, ...fresh] : items,
         page,
         perPage,
         total,

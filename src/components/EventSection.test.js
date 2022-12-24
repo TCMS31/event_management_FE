@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import JoinEvent from './JoinEvent';
 import EventList from './EventList';
@@ -40,6 +40,38 @@ describe('paginated event lists', () => {
 
     await waitFor(() => expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(62));
     expect(mock.history.get.map((r) => r.params.page)).toEqual([1, 2]);
+    expect(screen.queryByRole('button', { name: /load more/i })).not.toBeInTheDocument();
+  });
+
+  it('does not skip a row after joining one from the first page', async () => {
+    const user = userEvent.setup();
+    let rows = joinable;
+    mock
+      .onGet('/api/v1/events/get_events')
+      .reply((config) => pageOf(rows, { page: config.params.page }));
+    mock.onPost(/add_user_to_events/).reply(() => {
+      rows = rows.filter((event) => event.id !== joinable[0].id);
+      return [201, {}];
+    });
+
+    renderWithProviders(<JoinEvent />, { session });
+
+    const [firstJoin] = await screen.findAllByRole('button', { name: 'Join event' });
+    await user.click(firstJoin);
+    await user.click(
+      within(screen.getByRole('dialog')).getByRole('button', { name: 'Join event' })
+    );
+    await waitFor(() => expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(49));
+
+    // One short of a full page, so "Load more" re-reads page 1 for the row that slid in...
+    await user.click(screen.getByRole('button', { name: /load more/i }));
+    await waitFor(() => expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(50));
+    // ...and then page 2 as usual.
+    await user.click(screen.getByRole('button', { name: /load more/i }));
+
+    await waitFor(() =>
+      expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(joinable.length - 1)
+    );
     expect(screen.queryByRole('button', { name: /load more/i })).not.toBeInTheDocument();
   });
 

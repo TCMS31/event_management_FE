@@ -54,6 +54,19 @@ describe('eventReducer', () => {
     expect(appended.collections.joinable.hasMore).toBe(false);
   });
 
+  it('COLLECTION_LOADED drops rows an appended page repeats', () => {
+    const state = seededState();
+
+    const next = eventReducer(state, {
+      type: 'COLLECTION_LOADED',
+      collection: 'joinable',
+      append: true,
+      payload: { items: [{ id: 11 }, { id: 12 }], page: 2, perPage: 2, total: 3, hasMore: false },
+    });
+
+    expect(next.collections.joinable.items.map((e) => e.id)).toEqual([10, 11, 12]);
+  });
+
   it('EVENT_JOINED moves the event from joinable to joined in one step', () => {
     const next = eventReducer(seededState(), { type: 'EVENT_JOINED', payload: { id: 10 } });
 

@@ -43,10 +43,13 @@ export const useEventCollection = (collection) => {
     return () => controller.abort();
   }, [load]);
 
+  // The next page is derived from how many rows are on screen rather than from
+  // the last page number: after a local join or delete the list is one short,
+  // so re-requesting the current page picks up the row that slid into it.
   const loadMore = useCallback(() => {
     if (!slice.hasMore || slice.status === 'loading') return;
-    load({ page: slice.page + 1, append: true });
-  }, [load, slice.hasMore, slice.page, slice.status]);
+    load({ page: Math.floor(slice.items.length / slice.perPage) + 1, append: true });
+  }, [load, slice.hasMore, slice.items.length, slice.perPage, slice.status]);
 
   const reload = useCallback(() => load({ page: 1, append: false }), [load]);
 
