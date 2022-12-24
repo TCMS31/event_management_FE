@@ -128,6 +128,17 @@ describe('auth flow', () => {
     expect(await screen.findByRole('heading', { name: /^sign in$/i })).toBeInTheDocument();
   });
 
+  it('returns to the sign-in form when the API rejects a stored token', async () => {
+    defaultTokenStore.save({ token: DEMO_TOKEN, user: DEMO_USER });
+    mock.onGet(/\/api\/v1\/events/).reply(401, { errors: ['Signature has expired'] });
+
+    renderApp('/');
+
+    expect(await screen.findByRole('heading', { name: /^sign in$/i })).toBeInTheDocument();
+    expect(defaultTokenStore.getToken()).toBeNull();
+    expect(screen.queryByRole('button', { name: /sign out/i })).not.toBeInTheDocument();
+  });
+
   it('shows the signed-in identity in the navigation bar', async () => {
     stubLists(mock);
     defaultTokenStore.save({ token: DEMO_TOKEN, user: DEMO_USER });

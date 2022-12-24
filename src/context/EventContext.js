@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useMemo, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
 import { createInitialState, eventReducer } from './eventReducer';
+import { onSessionExpired } from '../services/api';
 import { defaultTokenStore } from '../services/tokenStore';
 
 const EventContext = createContext(null);
@@ -15,6 +16,8 @@ const EventProvider = ({ children, tokenStore = defaultTokenStore, initialState 
     eventReducer,
     initialState ?? createInitialState({ token: tokenStore.getToken(), user: tokenStore.getUser() })
   );
+
+  useEffect(() => onSessionExpired(() => dispatch({ type: 'SIGN_OUT' })), []);
 
   const value = useMemo(() => ({ state, dispatch, tokenStore }), [state, dispatch, tokenStore]);
 

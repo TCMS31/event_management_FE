@@ -82,6 +82,23 @@ export const describeApiError = (error, fallback = 'Something went wrong.') => {
   return fallback;
 };
 
-const api = createApiClient();
+const sessionExpiredListeners = new Set();
+
+/**
+ * Subscribes to "the API rejected our token". The shared client clears the
+ * stored token itself, but the signed-in flag lives in React state, so the
+ * provider listens here to flip it; otherwise the UI stays signed in on a dead
+ * session until the next full page load.
+ *
+ * @returns {() => void} unsubscribe
+ */
+export const onSessionExpired = (listener) => {
+  sessionExpiredListeners.add(listener);
+  return () => sessionExpiredListeners.delete(listener);
+};
+
+const api = createApiClient({
+  onUnauthorized: () => sessionExpiredListeners.forEach((listener) => listener()),
+});
 
 export default api;
