@@ -1,0 +1,54 @@
+{
+  "root": true,
+  "extends": ["react-app", "react-app/jest", "plugin:prettier/recommended"],
+  "rules": {
+    "no-console": [
+      "warn",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
+    "eqeqeq": ["error", "smart"],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "prefer-const": "error",
+    "object-shorthand": "error"
+  },
+  "overrides": [
+    {
+      "files": ["tools/**/*.js", "src/setupProxy.js"],
+      "env": {
+        "node": true,
+        "browser": false
+      },
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["src/**/*.test.js", "src/testing/**/*.js"],
+      "env": {
+        "jest": true
+      }
+    },
+    {
+      "files": ["e2e/**/*.js"],
+      "env": {
+        "node": true,
+        "browser": true
+      },
+      "rules": {
+        "no-console": "off",
+        "testing-library/prefer-screen-queries": "off",
+        "testing-library/no-await-sync-queries": "off",
+        "testing-library/prefer-presence-queries": "off",
+        "jest/no-standalone-expect": "off",
+        "jest/expect-expect": "off"
+      }
+    }
+  ]
+}
