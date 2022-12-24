@@ -5,11 +5,7 @@
 # ships its own compose file. Bring it up on a shared network and this stack
 # will find it; or run the bundled mock API instead with:
 #
-#   docker compose --profile mock up
-#
-# NOTE: neither service in this file has been built or booted — Docker was
-# switched off in the environment where this was authored. `docker compose
-# config` parses cleanly; that is the extent of the verification.
+#   docker compose --profile mock up --build
 
 services:
   web:
@@ -18,7 +14,6 @@ services:
       args:
         # Empty means "same origin", which is what the nginx config serves.
         VITE_API_URL: ''
-    image: event-management-fe:latest
     ports:
       - '${WEB_PORT:-8680}:8080'
     depends_on:
@@ -40,7 +35,7 @@ services:
   # its place simply by not enabling this profile.
   mock-api:
     profiles: ['mock']
-    image: node:20-alpine
+    image: node:22-alpine
     working_dir: /app
     command: ['node', 'tools/mock-api.js']
     environment:

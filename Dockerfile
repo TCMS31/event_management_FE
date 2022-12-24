@@ -23,13 +23,14 @@ ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 # ------------------------------------------------------------- runtime stage
-FROM nginx:1.27-alpine AS runtime
+FROM nginx:1.30-alpine AS runtime
 
-# nginx's own config needs a writable prefix; give the unprivileged user one
-# rather than running the server as root.
+# Run nginx as an unprivileged user: it needs a writable cache directory and a
+# pid file it can create (/run is root-owned, so the pid moves to /tmp), and the
+# `user` directive is meaningless without root.
 RUN adduser -D -u 10001 webapp \
- && mkdir -p /var/cache/nginx /var/run \
- && chown -R webapp:webapp /var/cache/nginx /var/run /usr/share/nginx/html
+ && sed -i -e 's|^pid .*|pid /tmp/nginx.pid;|' -e '/^user /d' /etc/nginx/nginx.conf \
+ && chown -R webapp:webapp /var/cache/nginx /usr/share/nginx/html
 
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build --chown=webapp:webapp /app/build /usr/share/nginx/html
