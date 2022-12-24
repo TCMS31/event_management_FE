@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
 // The app persists its session in localStorage via `defaultTokenStore`, and the
 // axios singleton reads from it. Emptying it between tests keeps them

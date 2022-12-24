@@ -28,7 +28,7 @@ let mock;
 let notifyError;
 beforeEach(() => {
   mock = mockApi();
-  notifyError = jest.spyOn(NotificationManager, 'error').mockImplementation(() => {});
+  notifyError = vi.spyOn(NotificationManager, 'error').mockImplementation(() => {});
 });
 afterEach(() => {
   mock.restore();

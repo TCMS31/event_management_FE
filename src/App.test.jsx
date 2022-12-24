@@ -31,12 +31,12 @@ const stubLists = (mock) => {
 let mock;
 beforeEach(() => {
   mock = mockApi();
-  jest.spyOn(NotificationManager, 'success').mockImplementation(() => {});
-  jest.spyOn(NotificationManager, 'error').mockImplementation(() => {});
+  vi.spyOn(NotificationManager, 'success').mockImplementation(() => {});
+  vi.spyOn(NotificationManager, 'error').mockImplementation(() => {});
 });
 afterEach(() => {
   mock.restore();
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('routing', () => {

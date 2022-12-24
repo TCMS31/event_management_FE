@@ -43,7 +43,7 @@ describe('api client', () => {
   it('clears the session and notifies on a 401', async () => {
     const tokenStore = createMemoryTokenStore();
     tokenStore.save({ token: 'Bearer expired', user: { id: 1 } });
-    const onUnauthorized = jest.fn();
+    const onUnauthorized = vi.fn();
     const client = createApiClient({ tokenStore, onUnauthorized });
     const mock = new MockAdapter(client);
     mock.onGet('/api/v1/events').reply(401, { errors: ['You need to sign in.'] });

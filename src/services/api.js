@@ -6,11 +6,12 @@ import { defaultTokenStore } from './tokenStore';
  *
  * Empty string means "same origin", which is what production wants: the CDN /
  * reverse proxy in front of the built bundle forwards `/api`, `/login`,
- * `/logout` and `/signup` to the API. In development `src/setupProxy.js` does
- * the same job, so the default is correct in both places and `REACT_APP_API_URL`
- * only has to be set when the API lives on a different origin.
+ * `/logout` and `/signup` to the API. In development the Vite dev server's
+ * proxy (`vite.config.mjs`) does the same job, so the default is correct in both
+ * places and `VITE_API_URL` only has to be set when the API lives on a
+ * different origin.
  */
-export const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 /** Endpoints that must be called *without* an Authorization header. */
 const UNAUTHENTICATED_PATHS = ['/login', '/signup'];

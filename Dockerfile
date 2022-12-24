@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---------------------------------------------------------------- build stage
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
@@ -9,17 +9,16 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
+COPY index.html vite.config.mjs ./
 COPY public ./public
 COPY src ./src
-COPY .eslintrc.json ./
 
-# The API origin is baked into the bundle at build time, which is how Create
-# React App works: REACT_APP_* is substituted, not read at runtime. Leave it
-# empty to call the API on the same origin as the page (the default, and what
-# the nginx config below serves).
-ARG REACT_APP_API_URL=""
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
-ENV GENERATE_SOURCEMAP=false
+# The API origin is baked into the bundle at build time: Vite substitutes
+# VITE_* rather than reading it at runtime. Leave it empty to call the API on
+# the same origin as the page (the default, and what the nginx config below
+# serves).
+ARG VITE_API_URL=""
+ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
 

@@ -17,7 +17,7 @@ services:
       context: .
       args:
         # Empty means "same origin", which is what the nginx config serves.
-        REACT_APP_API_URL: ''
+        VITE_API_URL: ''
     image: event-management-fe:latest
     ports:
       - '${WEB_PORT:-8680}:8080'
