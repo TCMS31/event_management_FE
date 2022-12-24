@@ -1,0 +1,49 @@
+# dependencies
+/node_modules
+node_modules/
+project_venv/
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+/.playwright
+/test-results
+/playwright-report
+
+# production
+/build
+/dist
+
+# caches
+.cache/
+.eslintcache
+.vite/
+*.tsbuildinfo
+
+# local environment
+.env
+.env.*
+!.env.example
+
+# editors and OS
+.DS_Store
+.idea
+.vscode
+*.swp
+
+# logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# scratch
+tmp/
+
+# deployment
+.netlify
+
+# not part of this project's tree
+.github/

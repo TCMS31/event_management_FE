@@ -1,0 +1,35 @@
+# Captured against the CRA dev server on :8680, which proxies the API paths
+# to the mock API on :8681 (src/setupProxy.js). Nothing here is hand-written.
+
+$ curl -sI http://localhost:8680/login        # a GET must serve the app, not JSON
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+
+$ curl -s -D- -o /dev/null -X POST http://localhost:8680/login \
+      -H "Content-Type: application/json" \
+      -d "{\"user\":{\"email\":\"ada@example.com\",\"password\":\"password123\"}}"
+HTTP/1.1 200 OK
+access-control-expose-headers: Authorization, X-Total-Count, X-Page, X-Per-Page
+authorization: Bearer mock-session-token
+
+$ curl -s -D- -o /dev/null -H "Authorization: $TOKEN" \
+      "http://localhost:8680/api/v1/events/get_events?page=1&per_page=50"
+HTTP/1.1 200 OK
+x-total-count: 62
+x-page: 1
+x-per-page: 50
+(62 joinable events exist; the API returns the first 50 and says so in the headers)
+
+$ curl -s -w " <- HTTP %{http_code}" -H "Authorization: $TOKEN" http://localhost:8680/api/v1/events/9999
+{"errors":["Event not found"]} <- HTTP 404
+
+$ curl -s -w " <- HTTP %{http_code}" -X PATCH -H "Authorization: $TOKEN" \
+      -H "Content-Type: application/json" -d "{\"event\":{\"name\":\"hijacked\"}}" \
+      http://localhost:8680/api/v1/events/7        # event 7 belongs to another user
+{"errors":["You are not allowed to do that."]} <- HTTP 403
+
+$ curl -s -w " <- HTTP %{http_code}" -X DELETE -H "Authorization: $TOKEN" http://localhost:8680/logout
+{"status":200,"message":"Logged out successfully."} <- HTTP 200
+
+$ curl -s -w " <- HTTP %{http_code}" http://localhost:8680/api/v1/events    # no token
+{"errors":["You need to sign in before continuing."]} <- HTTP 401

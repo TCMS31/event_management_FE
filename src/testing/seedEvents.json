@@ -1,0 +1,619 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Ada Lovelace",
+      "email": "ada@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Grace Hopper",
+      "email": "grace@example.com"
+    },
+    {
+      "id": 3,
+      "name": "Alan Turing",
+      "email": "alan@example.com"
+    },
+    {
+      "id": 4,
+      "name": "Karen Sparck Jones",
+      "email": "karen@example.com"
+    },
+    {
+      "id": 5,
+      "name": "Edsger Dijkstra",
+      "email": "edsger@example.com"
+    }
+  ],
+  "organized": [
+    {
+      "id": 1,
+      "name": "Zero Downtime Migrations",
+      "description": "Shipping schema changes without a maintenance window: expand/contract, backfills and the rollback you hope never to use.",
+      "date": "2026-10-11T18:00:00.000Z",
+      "location": "Federation House, Manchester",
+      "organizer_id": 1
+    },
+    {
+      "id": 2,
+      "name": "Designing an API Your Client Can Trust",
+      "description": "Status codes, error envelopes and pagination headers, and why each one is a support ticket you never file.",
+      "date": "2026-10-20T18:00:00.000Z",
+      "location": "Platform, Leeds",
+      "organizer_id": 1
+    },
+    {
+      "id": 3,
+      "name": "Postgres Index Clinic",
+      "description": "Bring a slow query. We read the plan together and leave with a working index strategy.",
+      "date": "2026-10-29T18:00:00.000Z",
+      "location": "Engine Shed, Bristol",
+      "organizer_id": 1
+    },
+    {
+      "id": 4,
+      "name": "Docker for People Who Ship",
+      "description": "Multi-stage builds, small images, non-root users and healthchecks that mean something.",
+      "date": "2026-11-07T18:00:00.000Z",
+      "location": "CodeBase, Edinburgh",
+      "organizer_id": 1
+    },
+    {
+      "id": 5,
+      "name": "Accessible by Default",
+      "description": "Focus order, live regions and colour contrast, demonstrated with a screen reader.",
+      "date": "2026-11-16T18:00:00.000Z",
+      "location": "Kings Place, London",
+      "organizer_id": 1
+    },
+    {
+      "id": 6,
+      "name": "Rate Limiting in Practice",
+      "description": "Token buckets, sliding windows and what to put in the 429 response body.",
+      "date": "2026-11-25T18:00:00.000Z",
+      "location": "Tramshed Tech, Cardiff",
+      "organizer_id": 1
+    }
+  ],
+  "joined": [
+    {
+      "id": 7,
+      "name": "Rails 7 in Anger",
+      "description": "What Hotwire actually replaces, where it does not, and the parts of the asset pipeline nobody warned you about.",
+      "date": "2026-10-08T18:00:00.000Z",
+      "location": "CodeBase, Edinburgh",
+      "organizer_id": 2
+    },
+    {
+      "id": 8,
+      "name": "The Pragmatic Test Pyramid",
+      "description": "Choosing what to unit test, what to integration test, and what to simply not test.",
+      "date": "2026-10-15T18:00:00.000Z",
+      "location": "Kings Place, London",
+      "organizer_id": 3
+    },
+    {
+      "id": 9,
+      "name": "Background Jobs That Behave",
+      "description": "Idempotency, retries with jitter, and dead-letter queues you will genuinely read.",
+      "date": "2026-10-22T18:00:00.000Z",
+      "location": "Tramshed Tech, Cardiff",
+      "organizer_id": 4
+    },
+    {
+      "id": 10,
+      "name": "CSS That Survives a Redesign",
+      "description": "Custom properties, layering and the discipline that keeps a stylesheet under control.",
+      "date": "2026-10-29T18:00:00.000Z",
+      "location": "Kollider, Sheffield",
+      "organizer_id": 5
+    },
+    {
+      "id": 11,
+      "name": "Observability on a Budget",
+      "description": "Structured logs, one dashboard and three alerts that actually wake you for the right reasons.",
+      "date": "2026-11-05T18:00:00.000Z",
+      "location": "Campus North, Newcastle",
+      "organizer_id": 2
+    }
+  ],
+  "joinable": [
+    {
+      "id": 12,
+      "name": "React Without the Framework",
+      "description": "How far plain React Router and fetch get you before you reach for something bigger.",
+      "date": "2026-10-07T18:00:00.000Z",
+      "location": "Platform, Leeds",
+      "organizer_id": 2
+    },
+    {
+      "id": 13,
+      "name": "Designing an API Your Client Can Trust",
+      "description": "Status codes, error envelopes and pagination headers, and why each one is a support ticket you never file.",
+      "date": "2026-10-09T18:00:00.000Z",
+      "location": "Engine Shed, Bristol",
+      "organizer_id": 3
+    },
+    {
+      "id": 14,
+      "name": "The Pragmatic Test Pyramid",
+      "description": "Choosing what to unit test, what to integration test, and what to simply not test.",
+      "date": "2026-10-11T18:00:00.000Z",
+      "location": "CodeBase, Edinburgh",
+      "organizer_id": 4
+    },
+    {
+      "id": 15,
+      "name": "Observability on a Budget",
+      "description": "Structured logs, one dashboard and three alerts that actually wake you for the right reasons.",
+      "date": "2026-10-13T18:00:00.000Z",
+      "location": "Kings Place, London",
+      "organizer_id": 5
+    },
+    {
+      "id": 16,
+      "name": "Caching, Carefully",
+      "description": "Cache keys, invalidation and the surprisingly common bug of caching a logged-in response.",
+      "date": "2026-10-15T18:00:00.000Z",
+      "location": "Tramshed Tech, Cardiff",
+      "organizer_id": 2
+    },
+    {
+      "id": 17,
+      "name": "Accessible by Default",
+      "description": "Focus order, live regions and colour contrast, demonstrated with a screen reader.",
+      "date": "2026-10-17T18:00:00.000Z",
+      "location": "Kollider, Sheffield",
+      "organizer_id": 3
+    },
+    {
+      "id": 18,
+      "name": "Background Jobs That Behave",
+      "description": "Idempotency, retries with jitter, and dead-letter queues you will genuinely read.",
+      "date": "2026-10-19T18:00:00.000Z",
+      "location": "Campus North, Newcastle",
+      "organizer_id": 4
+    },
+    {
+      "id": 19,
+      "name": "Docker for People Who Ship",
+      "description": "Multi-stage builds, small images, non-root users and healthchecks that mean something.",
+      "date": "2026-10-21T18:00:00.000Z",
+      "location": "The Whisky Bond, Glasgow",
+      "organizer_id": 5
+    },
+    {
+      "id": 20,
+      "name": "Reading Other People’s Code",
+      "description": "A structured method for getting productive in an unfamiliar codebase in a week.",
+      "date": "2026-10-23T18:00:00.000Z",
+      "location": "Alpha Works, Birmingham",
+      "organizer_id": 2
+    },
+    {
+      "id": 21,
+      "name": "CSS That Survives a Redesign",
+      "description": "Custom properties, layering and the discipline that keeps a stylesheet under control.",
+      "date": "2026-10-25T18:00:00.000Z",
+      "location": "Antenna, Nottingham",
+      "organizer_id": 3
+    },
+    {
+      "id": 22,
+      "name": "Rate Limiting in Practice",
+      "description": "Token buckets, sliding windows and what to put in the 429 response body.",
+      "date": "2026-10-27T18:00:00.000Z",
+      "location": "Fusebox, Brighton",
+      "organizer_id": 4
+    },
+    {
+      "id": 23,
+      "name": "Feature Flags Without Regret",
+      "description": "Short-lived flags, cleanup budgets, and keeping the flag matrix from exploding.",
+      "date": "2026-10-29T18:00:00.000Z",
+      "location": "Federation House, Manchester",
+      "organizer_id": 5
+    },
+    {
+      "id": 24,
+      "name": "Incident Review, Blameless",
+      "description": "Running a post-incident review that produces changes rather than a document.",
+      "date": "2026-10-31T18:00:00.000Z",
+      "location": "Platform, Leeds",
+      "organizer_id": 2
+    },
+    {
+      "id": 25,
+      "name": "Zero Downtime Migrations",
+      "description": "Shipping schema changes without a maintenance window: expand/contract, backfills and the rollback you hope never to use.",
+      "date": "2026-11-02T18:00:00.000Z",
+      "location": "Engine Shed, Bristol",
+      "organizer_id": 3
+    },
+    {
+      "id": 26,
+      "name": "Rails 7 in Anger",
+      "description": "What Hotwire actually replaces, where it does not, and the parts of the asset pipeline nobody warned you about.",
+      "date": "2026-11-04T18:00:00.000Z",
+      "location": "CodeBase, Edinburgh",
+      "organizer_id": 4
+    },
+    {
+      "id": 27,
+      "name": "Postgres Index Clinic",
+      "description": "Bring a slow query. We read the plan together and leave with a working index strategy.",
+      "date": "2026-11-06T18:00:00.000Z",
+      "location": "Kings Place, London",
+      "organizer_id": 5
+    },
+    {
+      "id": 28,
+      "name": "React Without the Framework",
+      "description": "How far plain React Router and fetch get you before you reach for something bigger.",
+      "date": "2026-11-08T18:00:00.000Z",
+      "location": "Tramshed Tech, Cardiff",
+      "organizer_id": 2
+    },
+    {
+      "id": 29,
+      "name": "Designing an API Your Client Can Trust",
+      "description": "Status codes, error envelopes and pagination headers, and why each one is a support ticket you never file.",
+      "date": "2026-11-10T18:00:00.000Z",
+      "location": "Kollider, Sheffield",
+      "organizer_id": 3
+    },
+    {
+      "id": 30,
+      "name": "The Pragmatic Test Pyramid",
+      "description": "Choosing what to unit test, what to integration test, and what to simply not test.",
+      "date": "2026-11-12T18:00:00.000Z",
+      "location": "Campus North, Newcastle",
+      "organizer_id": 4
+    },
+    {
+      "id": 31,
+      "name": "Observability on a Budget",
+      "description": "Structured logs, one dashboard and three alerts that actually wake you for the right reasons.",
+      "date": "2026-11-14T18:00:00.000Z",
+      "location": "The Whisky Bond, Glasgow",
+      "organizer_id": 5
+    },
+    {
+      "id": 32,
+      "name": "Caching, Carefully",
+      "description": "Cache keys, invalidation and the surprisingly common bug of caching a logged-in response.",
+      "date": "2026-11-16T18:00:00.000Z",
+      "location": "Alpha Works, Birmingham",
+      "organizer_id": 2
+    },
+    {
+      "id": 33,
+      "name": "Accessible by Default",
+      "description": "Focus order, live regions and colour contrast, demonstrated with a screen reader.",
+      "date": "2026-11-18T18:00:00.000Z",
+      "location": "Antenna, Nottingham",
+      "organizer_id": 3
+    },
+    {
+      "id": 34,
+      "name": "Background Jobs That Behave",
+      "description": "Idempotency, retries with jitter, and dead-letter queues you will genuinely read.",
+      "date": "2026-11-20T18:00:00.000Z",
+      "location": "Fusebox, Brighton",
+      "organizer_id": 4
+    },
+    {
+      "id": 35,
+      "name": "Docker for People Who Ship",
+      "description": "Multi-stage builds, small images, non-root users and healthchecks that mean something.",
+      "date": "2026-11-22T18:00:00.000Z",
+      "location": "Federation House, Manchester",
+      "organizer_id": 5
+    },
+    {
+      "id": 36,
+      "name": "Reading Other People’s Code",
+      "description": "A structured method for getting productive in an unfamiliar codebase in a week.",
+      "date": "2026-11-24T18:00:00.000Z",
+      "location": "Platform, Leeds",
+      "organizer_id": 2
+    },
+    {
+      "id": 37,
+      "name": "CSS That Survives a Redesign",
+      "description": "Custom properties, layering and the discipline that keeps a stylesheet under control.",
+      "date": "2026-11-26T18:00:00.000Z",
+      "location": "Engine Shed, Bristol",
+      "organizer_id": 3
+    },
+    {
+      "id": 38,
+      "name": "Rate Limiting in Practice",
+      "description": "Token buckets, sliding windows and what to put in the 429 response body.",
+      "date": "2026-11-28T18:00:00.000Z",
+      "location": "CodeBase, Edinburgh",
+      "organizer_id": 4
+    },
+    {
+      "id": 39,
+      "name": "Feature Flags Without Regret",
+      "description": "Short-lived flags, cleanup budgets, and keeping the flag matrix from exploding.",
+      "date": "2026-11-30T18:00:00.000Z",
+      "location": "Kings Place, London",
+      "organizer_id": 5
+    },
+    {
+      "id": 40,
+      "name": "Incident Review, Blameless",
+      "description": "Running a post-incident review that produces changes rather than a document.",
+      "date": "2026-12-02T18:00:00.000Z",
+      "location": "Tramshed Tech, Cardiff",
+      "organizer_id": 2
+    },
+    {
+      "id": 41,
+      "name": "Zero Downtime Migrations",
+      "description": "Shipping schema changes without a maintenance window: expand/contract, backfills and the rollback you hope never to use.",
+      "date": "2026-12-04T18:00:00.000Z",
+      "location": "Kollider, Sheffield",
+      "organizer_id": 3
+    },
+    {
+      "id": 42,
+      "name": "Rails 7 in Anger",
+      "description": "What Hotwire actually replaces, where it does not, and the parts of the asset pipeline nobody warned you about.",
+      "date": "2026-12-06T18:00:00.000Z",
+      "location": "Campus North, Newcastle",
+      "organizer_id": 4
+    },
+    {
+      "id": 43,
+      "name": "Postgres Index Clinic",
+      "description": "Bring a slow query. We read the plan together and leave with a working index strategy.",
+      "date": "2026-12-08T18:00:00.000Z",
+      "location": "The Whisky Bond, Glasgow",
+      "organizer_id": 5
+    },
+    {
+      "id": 44,
+      "name": "React Without the Framework",
+      "description": "How far plain React Router and fetch get you before you reach for something bigger.",
+      "date": "2026-12-10T18:00:00.000Z",
+      "location": "Alpha Works, Birmingham",
+      "organizer_id": 2
+    },
+    {
+      "id": 45,
+      "name": "Designing an API Your Client Can Trust",
+      "description": "Status codes, error envelopes and pagination headers, and why each one is a support ticket you never file.",
+      "date": "2026-12-12T18:00:00.000Z",
+      "location": "Antenna, Nottingham",
+      "organizer_id": 3
+    },
+    {
+      "id": 46,
+      "name": "The Pragmatic Test Pyramid",
+      "description": "Choosing what to unit test, what to integration test, and what to simply not test.",
+      "date": "2026-12-14T18:00:00.000Z",
+      "location": "Fusebox, Brighton",
+      "organizer_id": 4
+    },
+    {
+      "id": 47,
+      "name": "Observability on a Budget",
+      "description": "Structured logs, one dashboard and three alerts that actually wake you for the right reasons.",
+      "date": "2026-12-16T18:00:00.000Z",
+      "location": "Federation House, Manchester",
+      "organizer_id": 5
+    },
+    {
+      "id": 48,
+      "name": "Caching, Carefully",
+      "description": "Cache keys, invalidation and the surprisingly common bug of caching a logged-in response.",
+      "date": "2026-12-18T18:00:00.000Z",
+      "location": "Platform, Leeds",
+      "organizer_id": 2
+    },
+    {
+      "id": 49,
+      "name": "Accessible by Default",
+      "description": "Focus order, live regions and colour contrast, demonstrated with a screen reader.",
+      "date": "2026-12-20T18:00:00.000Z",
+      "location": "Engine Shed, Bristol",
+      "organizer_id": 3
+    },
+    {
+      "id": 50,
+      "name": "Background Jobs That Behave",
+      "description": "Idempotency, retries with jitter, and dead-letter queues you will genuinely read.",
+      "date": "2026-12-22T18:00:00.000Z",
+      "location": "CodeBase, Edinburgh",
+      "organizer_id": 4
+    },
+    {
+      "id": 51,
+      "name": "Docker for People Who Ship",
+      "description": "Multi-stage builds, small images, non-root users and healthchecks that mean something.",
+      "date": "2026-12-24T18:00:00.000Z",
+      "location": "Kings Place, London",
+      "organizer_id": 5
+    },
+    {
+      "id": 52,
+      "name": "Reading Other People’s Code",
+      "description": "A structured method for getting productive in an unfamiliar codebase in a week.",
+      "date": "2026-12-26T18:00:00.000Z",
+      "location": "Tramshed Tech, Cardiff",
+      "organizer_id": 2
+    },
+    {
+      "id": 53,
+      "name": "CSS That Survives a Redesign",
+      "description": "Custom properties, layering and the discipline that keeps a stylesheet under control.",
+      "date": "2026-12-28T18:00:00.000Z",
+      "location": "Kollider, Sheffield",
+      "organizer_id": 3
+    },
+    {
+      "id": 54,
+      "name": "Rate Limiting in Practice",
+      "description": "Token buckets, sliding windows and what to put in the 429 response body.",
+      "date": "2026-12-30T18:00:00.000Z",
+      "location": "Campus North, Newcastle",
+      "organizer_id": 4
+    },
+    {
+      "id": 55,
+      "name": "Feature Flags Without Regret",
+      "description": "Short-lived flags, cleanup budgets, and keeping the flag matrix from exploding.",
+      "date": "2027-01-01T18:00:00.000Z",
+      "location": "The Whisky Bond, Glasgow",
+      "organizer_id": 5
+    },
+    {
+      "id": 56,
+      "name": "Incident Review, Blameless",
+      "description": "Running a post-incident review that produces changes rather than a document.",
+      "date": "2027-01-03T18:00:00.000Z",
+      "location": "Alpha Works, Birmingham",
+      "organizer_id": 2
+    },
+    {
+      "id": 57,
+      "name": "Zero Downtime Migrations",
+      "description": "Shipping schema changes without a maintenance window: expand/contract, backfills and the rollback you hope never to use.",
+      "date": "2027-01-05T18:00:00.000Z",
+      "location": "Antenna, Nottingham",
+      "organizer_id": 3
+    },
+    {
+      "id": 58,
+      "name": "Rails 7 in Anger",
+      "description": "What Hotwire actually replaces, where it does not, and the parts of the asset pipeline nobody warned you about.",
+      "date": "2027-01-07T18:00:00.000Z",
+      "location": "Fusebox, Brighton",
+      "organizer_id": 4
+    },
+    {
+      "id": 59,
+      "name": "Postgres Index Clinic",
+      "description": "Bring a slow query. We read the plan together and leave with a working index strategy.",
+      "date": "2027-01-09T18:00:00.000Z",
+      "location": "Federation House, Manchester",
+      "organizer_id": 5
+    },
+    {
+      "id": 60,
+      "name": "React Without the Framework",
+      "description": "How far plain React Router and fetch get you before you reach for something bigger.",
+      "date": "2027-01-11T18:00:00.000Z",
+      "location": "Platform, Leeds",
+      "organizer_id": 2
+    },
+    {
+      "id": 61,
+      "name": "Designing an API Your Client Can Trust",
+      "description": "Status codes, error envelopes and pagination headers, and why each one is a support ticket you never file.",
+      "date": "2027-01-13T18:00:00.000Z",
+      "location": "Engine Shed, Bristol",
+      "organizer_id": 3
+    },
+    {
+      "id": 62,
+      "name": "The Pragmatic Test Pyramid",
+      "description": "Choosing what to unit test, what to integration test, and what to simply not test.",
+      "date": "2027-01-15T18:00:00.000Z",
+      "location": "CodeBase, Edinburgh",
+      "organizer_id": 4
+    },
+    {
+      "id": 63,
+      "name": "Observability on a Budget",
+      "description": "Structured logs, one dashboard and three alerts that actually wake you for the right reasons.",
+      "date": "2027-01-17T18:00:00.000Z",
+      "location": "Kings Place, London",
+      "organizer_id": 5
+    },
+    {
+      "id": 64,
+      "name": "Caching, Carefully",
+      "description": "Cache keys, invalidation and the surprisingly common bug of caching a logged-in response.",
+      "date": "2027-01-19T18:00:00.000Z",
+      "location": "Tramshed Tech, Cardiff",
+      "organizer_id": 2
+    },
+    {
+      "id": 65,
+      "name": "Accessible by Default",
+      "description": "Focus order, live regions and colour contrast, demonstrated with a screen reader.",
+      "date": "2027-01-21T18:00:00.000Z",
+      "location": "Kollider, Sheffield",
+      "organizer_id": 3
+    },
+    {
+      "id": 66,
+      "name": "Background Jobs That Behave",
+      "description": "Idempotency, retries with jitter, and dead-letter queues you will genuinely read.",
+      "date": "2027-01-23T18:00:00.000Z",
+      "location": "Campus North, Newcastle",
+      "organizer_id": 4
+    },
+    {
+      "id": 67,
+      "name": "Docker for People Who Ship",
+      "description": "Multi-stage builds, small images, non-root users and healthchecks that mean something.",
+      "date": "2027-01-25T18:00:00.000Z",
+      "location": "The Whisky Bond, Glasgow",
+      "organizer_id": 5
+    },
+    {
+      "id": 68,
+      "name": "Reading Other People’s Code",
+      "description": "A structured method for getting productive in an unfamiliar codebase in a week.",
+      "date": "2027-01-27T18:00:00.000Z",
+      "location": "Alpha Works, Birmingham",
+      "organizer_id": 2
+    },
+    {
+      "id": 69,
+      "name": "CSS That Survives a Redesign",
+      "description": "Custom properties, layering and the discipline that keeps a stylesheet under control.",
+      "date": "2027-01-29T18:00:00.000Z",
+      "location": "Antenna, Nottingham",
+      "organizer_id": 3
+    },
+    {
+      "id": 70,
+      "name": "Rate Limiting in Practice",
+      "description": "Token buckets, sliding windows and what to put in the 429 response body.",
+      "date": "2027-01-31T18:00:00.000Z",
+      "location": "Fusebox, Brighton",
+      "organizer_id": 4
+    },
+    {
+      "id": 71,
+      "name": "Feature Flags Without Regret",
+      "description": "Short-lived flags, cleanup budgets, and keeping the flag matrix from exploding.",
+      "date": "2027-02-02T18:00:00.000Z",
+      "location": "Federation House, Manchester",
+      "organizer_id": 5
+    },
+    {
+      "id": 72,
+      "name": "Incident Review, Blameless",
+      "description": "Running a post-incident review that produces changes rather than a document.",
+      "date": "2027-02-04T18:00:00.000Z",
+      "location": "Platform, Leeds",
+      "organizer_id": 2
+    },
+    {
+      "id": 73,
+      "name": "Zero Downtime Migrations",
+      "description": "Shipping schema changes without a maintenance window: expand/contract, backfills and the rollback you hope never to use.",
+      "date": "2027-02-06T18:00:00.000Z",
+      "location": "Engine Shed, Bristol",
+      "organizer_id": 3
+    }
+  ]
+}

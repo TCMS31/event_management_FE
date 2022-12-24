@@ -1,0 +1,14 @@
+# Netlify rewrite rules.
+#
+# The bundle calls the API with same-origin paths, so Netlify proxies them to
+# the deployed Rails app. `200` makes this a server-side rewrite rather than a
+# browser redirect, which keeps the Authorization header intact.
+#
+# Replace the host below with your own API before deploying.
+/api/*      https://api.example.com/api/:splat      200
+/login      https://api.example.com/login           200  Method=POST
+/logout     https://api.example.com/logout          200  Method=DELETE
+/signup     https://api.example.com/signup          200  Method=POST
+
+# Everything else is a client-side route.
+/*          /index.html                           200
