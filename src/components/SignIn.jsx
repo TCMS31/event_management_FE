@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import { BsFillPersonFill, BsLockFill } from 'react-icons/bs';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import { login } from '../services/authService';
 import { useEvent } from '../context/EventContext';
-import 'react-notifications/lib/notifications.css';
 
 /**
  * Sign-in form.
@@ -40,11 +39,11 @@ const SignIn = () => {
       const session = await login(fields);
       tokenStore.save(session);
       dispatch({ type: 'SIGN_IN', payload: session });
-      NotificationManager.success('Signed in. Taking you to your events.', 'Success');
+      notify.success('Signed in. Taking you to your events.', 'Success');
       navigate(location.state?.from ?? '/', { replace: true });
     } catch (loginError) {
       setError(loginError.message);
-      NotificationManager.error(loginError.message, 'Error');
+      notify.error(loginError.message, 'Error');
     } finally {
       setSubmitting(false);
     }

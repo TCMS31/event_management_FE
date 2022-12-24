@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import EventCard from './EventCard';
 import renderWithProviders from '../testing/renderWithProviders';
 import { DEMO_TOKEN, DEMO_USER, OTHER_USER, mockApi } from '../testing/mockApi';
@@ -28,7 +28,7 @@ let mock;
 let notifyError;
 beforeEach(() => {
   mock = mockApi();
-  notifyError = vi.spyOn(NotificationManager, 'error').mockImplementation(() => {});
+  notifyError = vi.spyOn(notify, 'error').mockImplementation(() => {});
 });
 afterEach(() => {
   mock.restore();

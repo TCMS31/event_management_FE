@@ -1,12 +1,12 @@
 import React, { Suspense, lazy } from 'react';
 import { Container, Nav, Navbar, Spinner } from 'react-bootstrap';
 import { Link, Route, Routes } from 'react-router-dom';
-import { NotificationContainer } from 'react-notifications';
 import Footer from './components/Footer';
 import NotFound from './components/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignIn from './components/SignIn';
 import SignOut from './components/SignOut';
+import Toaster from './components/Toaster';
 import Home from './layouts/Home';
 import { useEvent } from './context/EventContext';
 import './App.css';
@@ -85,7 +85,7 @@ const App = () => {
         </Suspense>
       </main>
 
-      <NotificationContainer />
+      <Toaster />
       <Footer />
     </>
   );

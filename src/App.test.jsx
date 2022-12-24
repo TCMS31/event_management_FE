@@ -3,7 +3,7 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
-import { NotificationManager } from 'react-notifications';
+import { notify } from './services/notify';
 import App from './App';
 import { EventProvider } from './context/EventContext';
 import { defaultTokenStore } from './services/tokenStore';
@@ -31,8 +31,8 @@ const stubLists = (mock) => {
 let mock;
 beforeEach(() => {
   mock = mockApi();
-  vi.spyOn(NotificationManager, 'success').mockImplementation(() => {});
-  vi.spyOn(NotificationManager, 'error').mockImplementation(() => {});
+  vi.spyOn(notify, 'success').mockImplementation(() => {});
+  vi.spyOn(notify, 'error').mockImplementation(() => {});
 });
 afterEach(() => {
   mock.restore();

@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import { BsEnvelopeFill, BsFillPersonFill, BsLockFill } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import { signUp } from '../services/authService';
-import 'react-notifications/lib/notifications.css';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -29,11 +28,11 @@ const SignUp = () => {
 
     try {
       await signUp(fields);
-      NotificationManager.success('Account created. Please sign in.', 'Success');
+      notify.success('Account created. Please sign in.', 'Success');
       navigate('/login');
     } catch (signUpError) {
       setError(signUpError.message);
-      NotificationManager.error(signUpError.message, 'Error');
+      notify.error(signUpError.message, 'Error');
     } finally {
       setSubmitting(false);
     }

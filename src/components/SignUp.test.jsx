@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import SignUp from './SignUp';
 import renderWithProviders from '../testing/renderWithProviders';
 import { mockApi } from '../testing/mockApi';
@@ -9,8 +9,8 @@ import { mockApi } from '../testing/mockApi';
 let mock;
 beforeEach(() => {
   mock = mockApi();
-  vi.spyOn(NotificationManager, 'success').mockImplementation(() => {});
-  vi.spyOn(NotificationManager, 'error').mockImplementation(() => {});
+  vi.spyOn(notify, 'success').mockImplementation(() => {});
+  vi.spyOn(notify, 'error').mockImplementation(() => {});
 });
 afterEach(() => {
   mock.restore();
@@ -59,10 +59,7 @@ describe('SignUp', () => {
     await fillForm(user);
 
     await waitFor(() =>
-      expect(NotificationManager.success).toHaveBeenCalledWith(
-        'Account created. Please sign in.',
-        'Success'
-      )
+      expect(notify.success).toHaveBeenCalledWith('Account created. Please sign in.', 'Success')
     );
   });
 });

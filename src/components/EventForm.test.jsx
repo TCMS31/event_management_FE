@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import EventForm from './EventForm';
 import renderWithProviders from '../testing/renderWithProviders';
 import { DEMO_TOKEN, DEMO_USER, mockApi } from '../testing/mockApi';
@@ -11,8 +11,8 @@ const session = { token: DEMO_TOKEN, user: DEMO_USER };
 let mock;
 beforeEach(() => {
   mock = mockApi();
-  vi.spyOn(NotificationManager, 'success').mockImplementation(() => {});
-  vi.spyOn(NotificationManager, 'error').mockImplementation(() => {});
+  vi.spyOn(notify, 'success').mockImplementation(() => {});
+  vi.spyOn(notify, 'error').mockImplementation(() => {});
 });
 afterEach(() => {
   mock.restore();
@@ -84,9 +84,7 @@ describe('EventForm', () => {
     await user.type(screen.getByLabelText(/location/i), 'Z');
     await user.click(screen.getByRole('button', { name: 'Create event' }));
 
-    await waitFor(() =>
-      expect(NotificationManager.error).toHaveBeenCalledWith('name is too short', 'Error')
-    );
+    await waitFor(() => expect(notify.error).toHaveBeenCalledWith('name is too short', 'Error'));
     expect(onClose).not.toHaveBeenCalled();
     expect(screen.getByRole('button', { name: 'Create event' })).toBeEnabled();
   });

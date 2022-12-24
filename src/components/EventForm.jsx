@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { BsCalendar, BsCardText, BsGeoAlt, BsPerson } from 'react-icons/bs';
 import DatePicker from 'react-datepicker';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import { useEvent } from '../context/EventContext';
 import { createEvent, describeApiError, updateEvent } from '../services/eventService';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -50,13 +50,10 @@ const EventForm = ({ onClose, event }) => {
         const created = await createEvent(payload);
         dispatch({ type: 'EVENT_CREATED', payload: created });
       }
-      NotificationManager.success(
-        `Event ${isEdit ? 'updated' : 'created'} successfully.`,
-        'Success'
-      );
+      notify.success(`Event ${isEdit ? 'updated' : 'created'} successfully.`, 'Success');
       onClose();
     } catch (error) {
-      NotificationManager.error(describeApiError(error, 'Could not save the event.'), 'Error');
+      notify.error(describeApiError(error, 'Could not save the event.'), 'Error');
     } finally {
       setSubmitting(false);
     }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, Col, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import eventImg from '../assets/images/event1.avif';
 import LazyEventForm from './LazyEventForm';
 import { useEvent } from '../context/EventContext';
@@ -41,9 +41,9 @@ const EventCard = ({ event, canJoin = false }) => {
     try {
       await deleteEvent(event.id);
       dispatch({ type: 'EVENT_DELETED', id: event.id });
-      NotificationManager.success('Event deleted successfully.', 'Success');
+      notify.success('Event deleted successfully.', 'Success');
     } catch (error) {
-      NotificationManager.error(describeApiError(error, 'Could not delete the event.'), 'Error');
+      notify.error(describeApiError(error, 'Could not delete the event.'), 'Error');
     } finally {
       setBusy(false);
       setDeleteModal(false);
@@ -55,9 +55,9 @@ const EventCard = ({ event, canJoin = false }) => {
     try {
       await joinEvent(event.id);
       dispatch({ type: 'EVENT_JOINED', payload: event });
-      NotificationManager.success('Event joined successfully.', 'Success');
+      notify.success('Event joined successfully.', 'Success');
     } catch (error) {
-      NotificationManager.error(describeApiError(error, 'Could not join the event.'), 'Error');
+      notify.error(describeApiError(error, 'Could not join the event.'), 'Error');
     } finally {
       setBusy(false);
       setJoinModal(false);

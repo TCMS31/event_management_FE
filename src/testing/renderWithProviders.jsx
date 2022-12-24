@@ -7,10 +7,9 @@ import { defaultTokenStore } from '../services/tokenStore';
 /**
  * Renders a component inside the providers the app really uses.
  *
- * The toast container is deliberately *not* mounted: `NotificationManager` is a
- * module-level singleton whose queue outlives a render, so a container would
- * leak notifications between tests. Tests assert on `NotificationManager`
- * directly instead.
+ * `<Toaster />` is deliberately *not* mounted, so a component under test never
+ * renders a toast's role="alert" next to its own. Tests spy on `notify`
+ * instead.
  *
  * The default token store is the application's own — `setupTests.js` empties it
  * between tests. Sharing it with the `api` singleton is the point: a test that

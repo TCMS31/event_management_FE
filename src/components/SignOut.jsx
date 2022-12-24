@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { NotificationManager } from 'react-notifications';
+import { notify } from '../services/notify';
 import { logout } from '../services/authService';
 import { useEvent } from '../context/EventContext';
 
@@ -23,7 +23,7 @@ const SignOut = () => {
     dispatch({ type: 'SIGN_OUT' });
     setBusy(false);
 
-    NotificationManager.success(
+    notify.success(
       revoked ? 'Signed out.' : 'Signed out locally; the session had already expired.',
       'Success',
       3000
