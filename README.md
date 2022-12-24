@@ -8,12 +8,12 @@ No database here and nothing server-rendered: this repo is one bundle that talks
 eleven JSON endpoints and stores a bearer token. Almost every decision below follows
 from one detail of that API — **the token arrives in a response header, not the body.**
 
-## The six screens
+## The screens
 
-Real renders at 1280×720, produced by `npm run screenshots` — Playwright drives the
-production bundle against the in-repo mock API, so the data is the seed fixture, not
-a mock-up. The "Load more (12 remaining)" button in the third shot is the whole
-pagination story in one control.
+Real renders at 1440×900 and at phone width (390×844), produced by
+`npm run screenshots`: Playwright drives the production bundle against the in-repo
+mock API, so the data is the seed fixture, not a mock-up. The "Load more (12
+remaining)" button in the third shot is the whole pagination story in one control.
 
 |                                                                                                    |                                                                            |
 | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
@@ -21,18 +21,36 @@ pagination story in one control.
 | **A capped list, honest about the remainder**<br>![Pagination](docs/screenshots/03-pagination.png) | **Event detail**<br>![Event detail](docs/screenshots/04-event-detail.png)  |
 | **Creating an event**<br>![Create event](docs/screenshots/05-create-event.png)                     | **Signing in**<br>![Sign in](docs/screenshots/06-sign-in.png)              |
 
+<p>
+  <img src="docs/screenshots/07-mobile-dashboard.png" alt="Dashboard at phone width" width="260" />
+  &nbsp;
+  <img src="docs/screenshots/08-mobile-event-detail.png" alt="Event detail at phone width" width="260" />
+</p>
+
+The look is a community noticeboard: warm paper, ink, a deep green for actions,
+vermilion and mustard for what should catch the eye, Fraunces for headings and
+Atkinson Hyperlegible for body text. Every card reuses the one stock photograph,
+tinted from the event id so a grid stays readable.
+
 ## Run it
 
-Two terminals. No database, no Docker, no Rails.
+Node 22 (see `.nvmrc`). Two terminals; no database, no Docker, no Rails.
 
 ```bash
-npm install
+npm ci
 npm run mock-api          # terminal 1 — stand-in API on :8681
 npm start                 # terminal 2 — the app on :8680
 ```
 
 Open <http://localhost:8680> and sign in as `ada@example.com`. The mock accepts any
 non-empty password — it checks that the fields are present, nothing more.
+
+Or the whole thing in containers, built exactly as it would ship (nginx serving the
+bundle and proxying the API to the stand-in):
+
+```bash
+docker compose --profile mock up --build      # http://localhost:8680
+```
 
 Against the real Rails API instead:
 
@@ -112,13 +130,23 @@ stateDiagram-v2
   end note
 ```
 
-Those four states are `EventSection.js`, written once: skeleton cards, an error with
+Those four states are `EventSection.jsx`, written once: skeleton cards, an error with
 a working retry, an honest empty message, or rows plus the remainder button. The
 `append` flag on `COLLECTION_LOADED` is how "Load more" grows a list without
 refetching page one — `eventReducer.test.js` pins it, along with the transition that
 moves a joined event out of _joinable_ and into _joined_ in a single step. (The
 screenshot's arithmetic: the seed fixture holds 62 joinable events, so a 50-row first
 page leaves the 12 the button offers.)
+
+Page numbers are offsets on the server, so a local change moves them: join one event
+from page one and every later row slides up a place. "Load more" therefore asks for
+the page that follows from the number of rows already on screen, not "last page + 1",
+and an appended page drops ids that are already listed. Without that, joining an
+event and then loading more silently skipped one, and creating one repeated a row.
+
+A `401` from any call clears the stored token **and** signs the UI out: the axios
+client publishes "session expired", `EventProvider` dispatches `SIGN_OUT`, and
+`ProtectedRoute` sends the user back to the sign-in form.
 
 ## Which buttons appear, and why
 
@@ -128,7 +156,7 @@ than guessing:
 
 - `isOrganizedBy(event, user)` compares `event.organizer_id` with the signed-in
   user's id and **fails closed** when either is missing. Edit and delete hang off
-  that, not off which list drew the card. `EventCard.test.js` includes _"hides the
+  that, not off which list drew the card. `EventCard.test.jsx` includes _"hides the
   controls when the identity is unknown, rather than assuming ownership"_.
 - "Join event" is offered only on a card marked joinable that the user does not
   organize. If the server refuses anyway, `describeApiError` unwraps whichever
@@ -136,70 +164,75 @@ than guessing:
   for the duplicate-booking `422`, and Devise's bare `{status: [...]}` from
   `/signup` — and the message goes into a toast.
 - `ProtectedRoute` renders a `<Navigate>` rather than calling `navigate()` from an
-  effect, so an anonymous visitor fires **zero** API requests, per `App.test.js`.
+  effect, so an anonymous visitor fires **zero** API requests, per `App.test.jsx`.
 
 There is **no capacity or waitlist anywhere in this client**, because the API has no
 seat-count column. Nothing here can tell you an event is full.
 
 ## Settings
 
-Create React App substitutes `REACT_APP_*` at **build** time, so changing one means
-rebuilding, not restarting. Copy `.env.example` to `.env.local`.
+Vite substitutes `VITE_*` at **build** time, so changing one means rebuilding, not
+restarting. Copy `.env.example` to `.env.local`.
 
-| Name                 | Default                 | Purpose                                                                                               |
-| -------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------- |
-| `REACT_APP_API_URL`  | `''` (same origin)      | Only needed for a cross-origin API, which then also needs CORS and the exposed `Authorization` header |
-| `PORT`               | `8680`                  | Dev server. Not `3000` — that is the Rails API's                                                      |
-| `API_PROXY_TARGET`   | `http://localhost:8681` | Where `src/setupProxy.js` forwards API calls in development                                           |
-| `MOCK_API_PORT`      | `8681`                  | Port for `npm run mock-api`                                                                           |
-| `SCREENSHOT_PORT`    | `8680`                  | Port `tools/serve-build.js` uses during a screenshot run                                              |
-| `WEB_PORT`           | `8680`                  | Host port published by `docker-compose.yml`                                                           |
-| `GENERATE_SOURCEMAP` | `true`                  | CRA flag. The Dockerfile sets it `false`                                                              |
+| Name               | Default                 | Purpose                                                                                               |
+| ------------------ | ----------------------- | ----------------------------------------------------------------------------------------------------- |
+| `VITE_API_URL`     | `''` (same origin)      | Only needed for a cross-origin API, which then also needs CORS and the exposed `Authorization` header |
+| `PORT`             | `8680`                  | Dev server. Not `3000`, which is the Rails API's                                                      |
+| `API_PROXY_TARGET` | `http://localhost:8681` | Where the dev server's proxy (`vite.config.mjs`) forwards API calls                                   |
+| `MOCK_API_PORT`    | `8681`                  | Port for `npm run mock-api`                                                                           |
+| `SCREENSHOT_PORT`  | `8680`                  | Port `tools/serve-build.js` uses during a screenshot run                                              |
+| `WEB_PORT`         | `8680`                  | Host port published by `docker-compose.yml`                                                           |
 
 ## Commands
 
 ```bash
-npm start            # dev server + API proxy
-npm run test:ci      # the suite, once, non-interactive
-npm run coverage     # …with a coverage report
-npm run lint         # ESLint (react-app rules + Prettier, as errors)
+npm start            # Vite dev server + API proxy
+npm test             # Vitest, once
+npm run test:watch   # Vitest in watch mode
+npm run lint         # ESLint (react, hooks, jsx-a11y, Prettier as errors)
 npm run format:check # Prettier, read-only
 npm run build        # production bundle into build/
+npm run preview      # serve build/ locally
 npm run mock-api     # the stand-in API
 npm run screenshots  # rebuild the images above (run `npm run build` first)
 ```
 
-`npm run build` on the current tree produces an entry bundle of roughly **117 kB
-gzipped**, plus a **47 kB** chunk holding the date-picker-heavy event form, which is
-fetched only when the modal opens. `EventDetails` and `SignUp` are split out the same
-way, since both are reached by a click.
+`npm run build` produces an entry bundle of roughly **100 kB gzipped** plus a
+**45 kB** chunk holding the date-picker-heavy event form, which is fetched only when
+the modal opens. `EventDetails` and `SignUp` are split out the same way, since both
+are reached by a click.
 
-A real curl transcript of the dev server — a sign-in returning the header, a 50-row
-page declaring `x-total-count: 62`, a `404`, a cross-user `403`, a logout and a
-tokenless `401` — is in
-[`docs/captured/dev-session.txt`](docs/captured/dev-session.txt).
+A real curl transcript against the Docker Compose stack (nginx in front, mock API
+behind): a sign-in returning the header, the second page of a list declaring
+`X-Total-Count: 62`, a cross-user `403`, a tokenless `401`, and the caching and
+security headers nginx adds. It is in
+[`docs/captured/compose-session.txt`](docs/captured/compose-session.txt).
 
 ## Where the code lives
 
 ```
 src/services/       nothing below this line imports React
-  api.js            axios instance, the two interceptors, error envelopes
+  api.js            axios instance, the two interceptors, error envelopes,
+                    the "session expired" signal
   tokenStore.js     the session seam (localStorage | memory)
   eventService.js   every endpoint, parseListResponse, isOrganizedBy
+  notify.js         toast publisher; components/Toaster.jsx renders it
 src/context/        EventContext provider + the pure eventReducer
 src/hooks/          useEventCollection — loads and pages one collection
 src/components/     EventSection (the four states), EventCard (ownership
                     gating), EventForm (lazy), ProtectedRoute, auth screens
-src/layouts/Home.js the signed-in dashboard, three sections
+src/layouts/Home.jsx the signed-in dashboard, three sections
 src/testing/        test helpers and the shared seed fixture
 tools/mock-api.js   stand-in API for dev, demo and screenshots
 e2e/                Playwright screenshot capture
 docker/nginx.conf   runtime server and reverse proxy
+vite.config.mjs     build, dev proxy and Vitest settings
 ```
 
 ## What the tests hold down
 
-`npm run test:ci` → **52 tests across 9 suites, all passing** (run on this tree).
+`npm test` → **68 tests across 13 files, all passing** (Vitest + Testing Library on
+jsdom, run on this tree).
 Every test mocks at the axios adapter on the app's _own_ instance, so the real
 request and response interceptors execute; nothing reaches the network and nothing
 needs Rails.
@@ -213,25 +246,27 @@ Two test names carry their own history, which is worth more than a claim in pros
 
 The rest: token attached verbatim and withheld from `/login`, the `401` sweep, all
 three error envelopes, pagination parsing including the header-less fallback, the
-reducer's transitions, ownership gating, the four list states, `404` versus `500` on
-the detail page, and a full sign-in → dashboard → sign-out drive in `App.test.js`.
+reducer's transitions, ownership gating, the four list states, "Load more" after a
+join, `404` versus `500` on the detail page, the event form's create/edit/error paths,
+sign-up validation, storage that throws, toasts, and full sign-in → dashboard →
+sign-out and expired-token drives in `App.test.jsx`.
 
 ## Shipping it
 
 ```bash
-docker compose build
-docker compose --profile mock up     # app + the stand-in API
+docker compose --profile mock up --build     # app + the stand-in API
 ```
 
-Multi-stage image (Node build → nginx runtime), unprivileged user, `HEALTHCHECK` on
-`/healthz`, and an nginx config that serves the SPA and proxies the API so the
-browser sees one origin.
+Multi-stage image (Node 22 build, nginx 1.30 runtime), unprivileged user, a
+`HEALTHCHECK` on `/healthz`, and an nginx config that serves the SPA and proxies the
+API so the browser sees one origin. Without `--profile mock` the `web` service expects
+the Rails API on the `api` hostname of a shared network.
 
-**None of it has been run.** `docker compose config` parses cleanly and that is the
-entire verification. This repo's own build report records, verbatim:
-
-> - **Build verified: NOT RUN — deferred, Docker off**
-> - **Boot verified: NOT RUN — deferred, Docker off**
+Running it for the first time turned up three bugs that a parse-only check could
+not: nginx as the unprivileged user could not write its pid file, a location that set
+`Cache-Control` silently dropped the security headers, and a `HEAD /login` was
+proxied to the API instead of serving the app. All three are fixed, and the stack
+comes up healthy.
 
 ## Known gaps
 
@@ -245,5 +280,9 @@ entire verification. This repo's own build report records, verbatim:
 - **One stock photograph.** Cards are tinted deterministically from the event id so a
   grid is readable. There is no per-event image upload.
 - **No capacity, and no way to add one from here.** See above.
-- **CRA is the build tool**, with `react-scripts` at 5.0.1. It is unmaintained
-  upstream; Vite is the honest next step and a bigger change than this repo has had.
+- **`e2e/` captures screenshots; it asserts very little.** Behaviour is pinned by the
+  unit suite, which mocks at the axios adapter, so nothing here runs against Rails.
+
+## License
+
+MIT, see [LICENSE](LICENSE).

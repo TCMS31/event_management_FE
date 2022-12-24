@@ -1,0 +1,46 @@
+# Captured against `docker compose --profile mock up --build`: nginx (web) serving
+# the production bundle and proxying the API paths to tools/mock-api.js. Requests
+# go to the web container, exactly as a browser would. Nothing here is hand-written.
+
+$ curl -sI localhost:8680/login        # GET or HEAD is a client route: the app, not JSON
+HTTP/1.1 200 OK
+Content-Type: text/html
+Cache-Control: no-store
+
+$ curl -si -X POST localhost:8680/login -H 'Content-Type: application/json' -d '{"user":{"email":"ada@example.com","password":"password123"}}'
+HTTP/1.1 200 OK
+Access-Control-Expose-Headers: Authorization, X-Total-Count, X-Page, X-Per-Page
+Authorization: Bearer mock-session-token
+{"status":{"code":200,"message":"Logged in successfully.","data":{"user":{"id":1,"name":"Ada Lovelace","email":"ada@example.com"}}}}
+
+
+$ curl -si -H "Authorization: $TOKEN" "localhost:8680/api/v1/events/get_events?page=2&per_page=50"
+HTTP/1.1 200 OK
+X-Total-Count: 62
+X-Page: 2
+X-Per-Page: 50
+[{"id":62,"name":"The Pragmatic Test Pyramid","description":"Choosing what to unit test, what to integration test, and what to simply not test.","date":"2027-01-15T18:00:00.000Z","location":"CodeBase, Edinburgh","organizer_id":4}, ... 11 more]
+(62 joinable events; page 2 of 50-row pages holds the last 12)
+
+$ curl -s -w " <- HTTP %{http_code}" -H "Authorization: $TOKEN" localhost:8680/api/v1/events/9999
+{"errors":["Event not found"]} <- HTTP 404
+
+$ curl -s -w " <- HTTP %{http_code}" -X PATCH -H "Authorization: $TOKEN" -H 'Content-Type: application/json' \
+      -d '{"event":{"name":"hijacked"}}' localhost:8680/api/v1/events/7    # another user's event
+{"errors":["You are not allowed to do that."]} <- HTTP 403
+
+$ curl -s -w " <- HTTP %{http_code}" localhost:8680/api/v1/events      # no token
+{"errors":["You need to sign in before continuing."]} <- HTTP 401
+
+$ curl -sI localhost:8680/static/index-CjJZebbZ.js        # hashed asset
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=31536000, immutable
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+
+$ curl -sI localhost:8680/
+HTTP/1.1 200 OK
+Cache-Control: no-store
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin

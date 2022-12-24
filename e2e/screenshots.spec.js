@@ -81,3 +81,21 @@ test.describe('README screenshots', () => {
     await page.screenshot({ path: path.join(SHOTS, '06-sign-in.png') });
   });
 });
+
+test.describe('README screenshots, phone width', () => {
+  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+
+  test('dashboard on a phone', async ({ page }) => {
+    await signIn(page);
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: path.join(SHOTS, '07-mobile-dashboard.png') });
+  });
+
+  test('event detail on a phone', async ({ page }) => {
+    await signIn(page);
+    await page.goto('/events/1');
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: path.join(SHOTS, '08-mobile-event-detail.png') });
+  });
+});

@@ -16,10 +16,12 @@ module.exports = defineConfig({
   outputDir: '../.playwright',
   reporter: [['list']],
   use: {
+    // The device preset goes first: it carries its own 1280x720 viewport,
+    // which would otherwise replace the one below.
+    ...devices['Desktop Chrome'],
     baseURL: `http://127.0.0.1:${APP_PORT}`,
     viewport: { width: 1440, height: 900 },
     deviceScaleFactor: 1,
-    ...devices['Desktop Chrome'],
   },
   webServer: [
     {
