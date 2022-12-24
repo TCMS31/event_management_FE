@@ -117,7 +117,7 @@ const EventCard = ({ event, canJoin = false }) => {
         <Card className="event-card h-100">
           <div className="event-card__media">
             <Card.Img variant="top" src={eventImg} alt="" />
-            <span className="event-card__tint" style={{ backgroundImage: eventTint(event.id) }} />
+            <span className="event-card__tint" style={{ backgroundColor: eventTint(event.id) }} />
             <span className="event-card__date-chip">{formatEventDate(event.date, 'short')}</span>
             {isOrganizer && (
               <button

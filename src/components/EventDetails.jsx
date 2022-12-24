@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Container, Spinner } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAlignLeft, faCalendarAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { BsCalendarEvent, BsGeoAlt, BsTextParagraph } from 'react-icons/bs';
 import { describeApiError, fetchEvent, isOrganizedBy } from '../services/eventService';
 import { useEvent } from '../context/EventContext';
 import { formatEventDate } from '../utils/formatters';
@@ -86,15 +85,15 @@ const EventDetails = () => {
             )}
             <h1 className="event-details__title">{event.name}</h1>
             <p className="event-details__meta">
-              <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
+              <BsCalendarEvent className="me-2" aria-hidden="true" />
               {formatEventDate(event.date, 'withTime')}
             </p>
             <p className="event-details__meta">
-              <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
+              <BsGeoAlt className="me-2" aria-hidden="true" />
               {event.location}
             </p>
             <p className="event-details__description">
-              <FontAwesomeIcon icon={faAlignLeft} className="me-2" />
+              <BsTextParagraph className="me-2" aria-hidden="true" />
               {event.description}
             </p>
             <Button as={Link} to="/" variant="light" className="mt-3">

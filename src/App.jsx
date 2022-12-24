@@ -30,11 +30,18 @@ const App = () => {
 
   return (
     <>
-      <Navbar expand="lg" fixed="top" className="app-navbar">
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <Navbar expand="lg" fixed="top" variant="dark" className="app-navbar">
         <Container>
           <Navbar.Brand as={Link} to="/" className="app-navbar__brand">
-            <span className="app-navbar__mark">E</span>
-            Event<span className="app-navbar__brand-accent">App</span>
+            <span className="app-navbar__mark" aria-hidden="true">
+              E
+            </span>
+            <span>
+              Event<span className="app-navbar__brand-accent">App</span>
+            </span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav">
@@ -59,7 +66,7 @@ const App = () => {
         </Container>
       </Navbar>
 
-      <main className="main-content">
+      <main id="main" className="main-content" tabIndex={-1}>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route

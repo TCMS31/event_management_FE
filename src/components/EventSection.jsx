@@ -52,7 +52,7 @@ const EventSection = ({
         {status === 'error' && (
           <div className="event-section__state event-section__state--error" role="alert">
             <p className="mb-3">{error}</p>
-            <Button variant="outline-light" size="sm" onClick={reload}>
+            <Button variant="outline-danger" size="sm" onClick={reload}>
               Try again
             </Button>
           </div>

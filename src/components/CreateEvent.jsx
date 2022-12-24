@@ -22,7 +22,7 @@ const CreateEvent = ({ show, onOpen, onClose }) => (
             Publish it here and let people join in one click.
           </p>
         </div>
-        <Button variant="light" size="lg" onClick={onOpen}>
+        <Button variant="accent" size="lg" onClick={onOpen}>
           Create an event
         </Button>
       </Container>
