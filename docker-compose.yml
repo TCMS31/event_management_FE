@@ -1,0 +1,59 @@
+# Runs the built client behind nginx, with the API reachable at the `api`
+# hostname the nginx config proxies to.
+#
+# The Rails API lives in a sibling repository (`event_management_app_BE`) and
+# ships its own compose file. Bring it up on a shared network and this stack
+# will find it; or run the bundled mock API instead with:
+#
+#   docker compose --profile mock up
+#
+# NOTE: neither service in this file has been built or booted — Docker was
+# switched off in the environment where this was authored. `docker compose
+# config` parses cleanly; that is the extent of the verification.
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        # Empty means "same origin", which is what the nginx config serves.
+        REACT_APP_API_URL: ''
+    image: event-management-fe:latest
+    ports:
+      - '${WEB_PORT:-8680}:8080'
+    depends_on:
+      mock-api:
+        condition: service_started
+        required: false
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://127.0.0.1:8080/healthz']
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    networks:
+      - event-management
+
+  # A stand-in for the Rails API, for demoing the UI on its own. It answers on
+  # the `api` hostname the nginx config proxies to, so the real backend can take
+  # its place simply by not enabling this profile.
+  mock-api:
+    profiles: ['mock']
+    image: node:20-alpine
+    working_dir: /app
+    command: ['node', 'tools/mock-api.js']
+    environment:
+      MOCK_API_PORT: '3000'
+    volumes:
+      - ./tools:/app/tools:ro
+      - ./src/testing:/app/src/testing:ro
+    networks:
+      event-management:
+        aliases:
+          - api
+    restart: unless-stopped
+
+networks:
+  event-management:
+    driver: bridge

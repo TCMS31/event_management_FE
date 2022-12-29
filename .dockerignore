@@ -1,0 +1,17 @@
+node_modules
+build
+coverage
+.playwright
+.git
+.gitignore
+.github
+.netlify
+docs
+e2e
+*.md
+!README.md
+.DS_Store
+npm-debug.log*
+.env
+.env.*
+!.env.example
